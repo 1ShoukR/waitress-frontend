@@ -1,9 +1,9 @@
 import React from 'react';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import { client } from '../api/client';
 const CreateAccount = () => {
-  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault(); 
 		const target = e.target as typeof e.target & {
 			firstName: { value: string };
@@ -11,6 +11,8 @@ const CreateAccount = () => {
 			email: { value: string };
 			password: { value: string };
 		};
+		const response = await client.get('todos/1');
+		console.log(response.data)
 		console.log('First Name:', target.firstName.value);
 		console.log('Last Name:', target.lastName.value);
 		console.log('Email:', target.email.value);
@@ -69,7 +71,7 @@ const CreateAccount = () => {
 								placeholder="******************"
 							/>
 						</div>
-				<button type='submit' className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button>
+						<button type='submit' className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Submit</button>
 					</form>
 				</div>
 			</div>
