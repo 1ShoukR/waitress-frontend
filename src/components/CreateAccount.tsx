@@ -3,16 +3,35 @@ import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { client } from '../api/client';
 const CreateAccount = () => {
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault(); 
+	const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
 		const target = e.target as typeof e.target & {
 			firstName: { value: string };
 			lastName: { value: string };
 			email: { value: string };
 			password: { value: string };
 		};
-		const response = await client.get('todos/1');
-		console.log(response.data)
+
+		const formData = new FormData();
+		const formFields = {
+			first_name: target.firstName.value,
+			last_name: target.lastName.value,
+			email: target.email.value,
+			password: target.password.value,
+			customer: 'true', // Assuming 'customer' is a flag
+		};
+
+		for (const [key, value] of Object.entries(formFields)) {
+			formData.append(key, value);
+		}
+
+		const response = await client.post('user/create', formData, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		});
+
+		console.log(response.data);
 		console.log('First Name:', target.firstName.value);
 		console.log('Last Name:', target.lastName.value);
 		console.log('Email:', target.email.value);
