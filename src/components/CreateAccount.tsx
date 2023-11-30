@@ -1,58 +1,54 @@
-import React, {useState} from 'react';
+import React, {useState, FormEvent} from 'react';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { client } from '../api/client';
+import axios from 'axios';
+// import { client } from '../api/client';
 const CreateAccount = () => {
+    const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
 	const [emailError, setEmailError] = useState(false);
 	const [passwordError, setPasswordError] = useState(false);
-	const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+
+	const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		setEmailError(false); 
-		setPasswordError(false); 
-		const target = e.target as typeof e.target & {
-			firstName: { value: string };
-			lastName: { value: string };
-			email: { value: string };
-			password: { value: string };
-		};
-        const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
+		setEmailError(false);
+		setPasswordError(false);
+
+		// Regex checks
+		const emailRegex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
 		const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-			if (!emailRegex.test(target.email.value)) {
-				setEmailError(true); 
-				return; 
-			}
-			if (!passwordRegex.test(target.password.value)){
-				setPasswordError(true)
-				return
-			}
 
+		if (!emailRegex.test(email)) {
+			setEmailError(true);
+			return;
+		}
+		if (!passwordRegex.test(password)) {
+			setPasswordError(true);
+			return;
+		}
 
-		const formData = new FormData();
-		const formFields = {
-			first_name: target.firstName.value,
-			last_name: target.lastName.value,
-			email: target.email.value,
-			password: target.password.value,
-			customer: 'true', // Assuming 'customer' is a flag
+		// Form Data Preparation
+    const jsonPayload = {
+			first_name: firstName,
+			last_name: lastName,
+			email: email,
+			password: password,
+			user_type: 'customer', // Assuming 'customer' is a flag
 		};
 
-		for (const [key, value] of Object.entries(formFields)) {
-			formData.append(key, value);
+		try {
+			// API Call with JSON
+			const response = await axios.post('http://127.0.0.1:3000/api/user/create', jsonPayload, {
+				headers: { 'Content-Type': 'application/json' },
+			});
+			console.log(response.data);
+		} catch (error) {
+			console.error('Error during API call:', error);
 		}
-		console.log(formData);
-
-		const response = await client.post('user/create', formData, {
-			headers: {
-				'Content-Type': 'multipart/form-data',
-			},
-		});
-
-		console.log(response.data);
-		console.log('First Name:', target.firstName.value);
-		console.log('Last Name:', target.lastName.value);
-		console.log('Email:', target.email.value);
-		console.log('Password:', target.password.value);
 	};
+
   return (
 		<div className="h-screen w-full flex justify-center items-center bg-gray-100">
 			<div className="bg-white shadow-lg rounded-lg p-10 flex flex-col items-center w-full max-w-4xl">
@@ -73,7 +69,9 @@ const CreateAccount = () => {
 									id="firstName"
 									name="firstName"
 									type="text"
+									value={firstName}
 									placeholder="First Name"
+									onChange={(e) => setFirstName(e.target.value)}
 								/>
 							</div>
 							<div className="mb-4">
@@ -86,6 +84,8 @@ const CreateAccount = () => {
 									name="lastName"
 									type="text"
 									placeholder="Last Name"
+									value={lastName}
+									onChange={(e) => setLastName(e.target.value)}
 								/>
 							</div>
 							<div className="mb-4">
@@ -98,6 +98,8 @@ const CreateAccount = () => {
 									name="email"
 									type="text"
 									placeholder="Email"
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
 								/>
 								{emailError && <p className="text-red-500 text-xs italic">Please enter a valid email address.</p>}
 							</div>
@@ -111,6 +113,8 @@ const CreateAccount = () => {
 									name="password"
 									type="password"
 									placeholder="******************"
+									value={password}
+									onChange={(e) => setPassword(e.target.value)}
 								/>
 								{passwordError && <p className="text-red-500 text-xs italic">Password must include at least one uppercase letter, one number, and one special character.</p>}
 							</div>
