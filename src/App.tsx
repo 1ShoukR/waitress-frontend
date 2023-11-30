@@ -8,7 +8,7 @@ import { Routes, Route } from 'react-router-dom'
 function App() {
 
   return (
-		<div className="bg-[#E1D9D1]">
+		<div className="">
 			<Navbar />
 			<Routes>
 				<Route path="/" element={<Home />} />
