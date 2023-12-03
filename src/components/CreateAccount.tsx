@@ -10,8 +10,9 @@ const CreateAccount = () => {
 	const [password, setPassword] = useState('');
 	const [emailError, setEmailError] = useState(false);
 	const [passwordError, setPasswordError] = useState(false);
+	const [token, setToken] = useState('')
 
-	const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+	const handleCreateAccount = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		setEmailError(false);
 		setPasswordError(false);
@@ -43,16 +44,19 @@ const CreateAccount = () => {
 			const response = await axios.post('http://127.0.0.1:3000/api/user/create', jsonPayload, {
 				headers: { 'Content-Type': 'application/json' },
 			});
-			console.log(response.data);
+			console.log(response);
+			if (response.data.success == true) {
+				setToken(response.data.created_user.token)
+			}
+			console.log('API TOKEN:', token)
 		} catch (error) {
 			console.error('Error during API call:', error);
 		}
 	};
-
   return (
 		<div className="h-screen w-full flex justify-center items-center bg-gray-100">
 			<div className="bg-white shadow-lg rounded-lg p-10 flex flex-col items-center w-full max-w-4xl">
-				<form className="w-full max-w-2xl" onSubmit={handleLogin}>
+				<form className="w-full max-w-2xl" onSubmit={handleCreateAccount}>
 					<div className="flex flex-row items-center mb-5">
 						<div className="flex flex-col items-center justify-center pr-14 mr-5">
 							<FontAwesomeIcon icon={faUser} size="8x" />
