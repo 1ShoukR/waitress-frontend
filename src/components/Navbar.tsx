@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Server from '../assets/server.svg'
 
 
 
@@ -8,10 +9,10 @@ const Navbar = () => {
 		<div className="flex justify-between items-center py-4 bg-[#f7f7f7] px-5">
 			<div className="flex items-center gap-4">
 				<Link to="/">
-					<img className="w-16 h-16 rounded-full border border-gray-300 shadow-lg" src="https://cdn-icons-png.flaticon.com/512/9570/9570098.png" alt="Generic Waitress PNG" />
+					<img className="w-16 h-16 border  shadow-lg" src={Server} alt="Generic Waitress PNG" />
 				</Link>
 				<Link to="/">
-						<h1 className="text-xl font-semibold">Waitress</h1>
+					<h1 className="text-xl font-semibold ">Waitress</h1>
 				</Link>
 			</div>
 			<div className="flex gap-4">
