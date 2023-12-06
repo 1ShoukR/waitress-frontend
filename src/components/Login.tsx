@@ -1,20 +1,33 @@
 import React, { FormEvent} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
+import axios from 'axios';
 
 
 
 const Login = () => {
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
-  const handleLogin = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    console.log('working')
-    const formData = new FormData()
-    formData.append('email', email)
-    formData.append('password', password)
-    console.log('form data', formData.get('password'))
-  }
+const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+	e.preventDefault();
+	console.log('working');
+
+	const formData = new FormData();
+	formData.append('email', email);
+	formData.append('password', password);
+	formData.append('user_agent', 'web')
+
+	try {
+		const response = await axios.post('http://127.0.0.1:3000/api/auth/login', formData, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+			},
+		});
+		console.log('Response:', response.data);
+	} catch (error) {
+		console.error('Error:', error);
+	}
+};
   return (
 		<div className="h-screen w-full flex justify-center items-center bg-gray-100">
 			<div className="bg-white shadow-lg rounded-lg p-10 flex flex-col items-center w-full max-w-4xl">
@@ -57,7 +70,9 @@ const Login = () => {
 						</div>
 					</div>
 					<div className="flex justify-center mt-4">
-						<button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+						<button
+							type="submit"
+							className="bg-[#D23D2B] hover:bg-[#C03238] text-white font-semibold py-3 px-11 rounded-md transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#DA3743] text-sm ">
 							Login
 						</button>
 					</div>
