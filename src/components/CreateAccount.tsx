@@ -125,7 +125,9 @@ const CreateAccount = () => {
 						</div>
 					</div>
 					<div className="flex justify-center mt-4">
-						<button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+						<button
+							type="submit"
+							className="bg-[#D23D2B] hover:bg-[#C03238] text-white font-semibold py-3 px-11 rounded-md transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#DA3743] text-sm ">
 							Submit
 						</button>
 					</div>
