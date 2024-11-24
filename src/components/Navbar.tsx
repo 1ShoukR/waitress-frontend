@@ -12,14 +12,14 @@ const Navbar = () => {
 					<img className="w-20 h-20" src={Icon} alt="Generic Waitress PNG" />
 				</Link>
 				<Link to="/">
-					<h1 className="text-xl font-semibold ">Waitress</h1>
+					<h1 className="text-3xl font-semibold ">Waitress</h1>
 				</Link>
 			</div>
 			<div className="flex gap-4">
-				<Link className="text-black-700 hover:text-gray-900 font-medium" to="/create-account">
+				<Link className="text-black-700 hover:text-gray-900 text-2xl font-medium" to="/create-account">
 					Create Account
 				</Link>
-				<Link className="text-black-700 hover:text-gray-900 font-medium" to="/login">
+				<Link className="text-black-700 hover:text-gray-900 text-2xl font-medium" to="/login">
 					Login
 				</Link>
 			</div>
