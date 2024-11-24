@@ -4,7 +4,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css"; // Important!
 
 const Home = () => {
   return (
-    <div className="w-full max-w-6xl mx-auto">
+    <div className="w-full  mx-auto">
       <Carousel
         showThumbs={false}
         infiniteLoop={true}
