@@ -30,7 +30,6 @@ const SearchModal = ({ isOpen, onClose }: {isOpen: boolean, onClose: () => void}
       <div className="bg-white p-10 rounded-lg w-full max-w-4xl">
         <div className="flex flex-col gap-6">
           <div className="flex gap-4 flex-wrap">
-            {/* Date Select */}
             <div className="flex-1 min-w-[200px]">
               <div className="relative">
                 <FontAwesomeIcon icon={faCalendar} className="absolute left-3 top-3 text-gray-500" />
@@ -41,7 +40,6 @@ const SearchModal = ({ isOpen, onClose }: {isOpen: boolean, onClose: () => void}
               </div>
             </div>
 
-            {/* Time Select */}
             <div className="flex-1 min-w-[200px]">
               <div className="relative">
                 <FontAwesomeIcon icon={faClock} className="absolute left-3 top-3 text-gray-500" />
@@ -55,7 +53,6 @@ const SearchModal = ({ isOpen, onClose }: {isOpen: boolean, onClose: () => void}
               </div>
             </div>
 
-            {/* People Select */}
             <div className="flex-1 min-w-[200px]">
               <div className="relative">
                 <FontAwesomeIcon icon={faUser} className="absolute left-3 top-3 text-gray-500" />
@@ -70,7 +67,6 @@ const SearchModal = ({ isOpen, onClose }: {isOpen: boolean, onClose: () => void}
             </div>
           </div>
 
-          {/* Search Input */}
           <div className="relative">
             <FontAwesomeIcon icon={faMagnifyingGlass} className="absolute left-3 top-3 text-gray-500" />
             <input 
@@ -81,7 +77,6 @@ const SearchModal = ({ isOpen, onClose }: {isOpen: boolean, onClose: () => void}
             />
           </div>
 
-          {/* Location Note */}
           <div className="text-sm text-gray-600 flex items-center gap-2">
             <span>It looks like you're in Cobb. Not correct?</span>
             <button className="text-red-500 hover:text-red-600">Get current location</button>
