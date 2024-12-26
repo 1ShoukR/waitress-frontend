@@ -5,7 +5,32 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons/faMagnifyingGlass'
 import { faCalendar, faClock, faUser } from '@fortawesome/free-solid-svg-icons'
 
+
+const handleSearch = ({
+	restaurant, location, date, time, numberOfPeople
+}: {
+	restaurant: string, 
+	location: string,
+	date: Date | null,
+	time: string,
+	numberOfPeople: number
+} ) => {
+	console.log({
+    restaurant,
+    location,
+    date,
+    time,
+    numberOfPeople
+  })
+}
+
 const SearchModal = ({ isOpen, onClose }: {isOpen: boolean, onClose: () => void}) => {
+	// create useStates for the capturable values in this search modal
+	const [numberOfPeople, setNumberOfPeople] = useState(1)
+	const [time, setTime] = useState<string>('7:30 PM')
+	const [date, setDate] = useState<Date | null>(null)
+	const [restaurant, setRestaurant] = useState('')
+	const [location, setLocation] = useState('')
   if (!isOpen) return null;
 
   const times = [
@@ -36,6 +61,7 @@ const SearchModal = ({ isOpen, onClose }: {isOpen: boolean, onClose: () => void}
                 <input 
                   type="date"
                   className="w-full pl-10 pr-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-900"
+                  onChange={(e) => setDate(e.target.valueAsDate)}
                 />
               </div>
             </div>
@@ -44,6 +70,8 @@ const SearchModal = ({ isOpen, onClose }: {isOpen: boolean, onClose: () => void}
               <div className="relative">
                 <FontAwesomeIcon icon={faClock} className="absolute left-3 top-3 text-gray-500" />
                 <select 
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-900 appearance-none bg-white"
                 >
                   {times.map(time => (
@@ -57,6 +85,8 @@ const SearchModal = ({ isOpen, onClose }: {isOpen: boolean, onClose: () => void}
               <div className="relative">
                 <FontAwesomeIcon icon={faUser} className="absolute left-3 top-3 text-gray-500" />
                 <select 
+                  value={`${numberOfPeople} ${numberOfPeople === 1 ? 'person' : 'people'}`}
+                  onChange={(e) => setNumberOfPeople(parseInt(e.target.value.split(' ')[0]))}
                   className="w-full pl-10 pr-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-900 appearance-none bg-white"
                 >
                   {people.map(option => (
@@ -71,6 +101,11 @@ const SearchModal = ({ isOpen, onClose }: {isOpen: boolean, onClose: () => void}
             <FontAwesomeIcon icon={faMagnifyingGlass} className="absolute left-3 top-3 text-gray-500" />
             <input 
               type="text" 
+              value={restaurant}
+              onChange={(e) => {
+                setRestaurant(e.target.value)
+                setLocation(e.target.value)  // We shall temporarily set the location to the restaurant for now, we will fix this later
+              }}
               placeholder="Location, Restaurant, or Cuisine" 
               className="w-full pl-10 pr-4 py-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-900" 
               autoFocus
@@ -84,13 +119,14 @@ const SearchModal = ({ isOpen, onClose }: {isOpen: boolean, onClose: () => void}
 
           <div className="flex justify-between">
             <button 
-              onClick={onClose}
-              className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
+            onClick={onClose}
+            className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
             >
-              Close
+            Close
             </button>
             <button 
-              className="px-8 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+            className="px-8 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+			onClick={() => handleSearch({ restaurant, location, date, time, numberOfPeople })}
             >
               Let's go
             </button>
