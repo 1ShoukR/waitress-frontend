@@ -7,6 +7,7 @@ import { faUsers } from '@fortawesome/free-solid-svg-icons/faUsers';
 import { faCalendar } from '@fortawesome/free-solid-svg-icons/faCalendar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
+import { useAppSelector } from '../redux/hooks';
 
 
 
@@ -63,31 +64,35 @@ const Carousel = ({ children }: { children: React.ReactNode[] }) => {
 
 const Home = () => {
   const navigate = useNavigate()
+  const user = useAppSelector((state) => state.auth)
   
   const features = [
+    /*
+    we need to make ternary to navigate a user to login based on if there is alredy a user logged in or not
+    */
     {
       icon: faUtensils,
       title: "Floor Plan Editor",
       description: "Design and modify your restaurant's layout with our intuitive web-based editor. Sync changes directly to your mobile app.",
-      onClick: () => navigate('/admin/floorplans')
+      onClick: () => user.apiToken ? navigate('/admin/floorplans') : navigate('/login')
     },
     {
       icon: faClipboardList,
       title: "Table Management",
       description: "Track table status, manage seating arrangements, and optimize your dining space efficiency in real-time.",
-      onClick: () => navigate('/admin/view-tables')
+      onClick: () => user.apiToken ? navigate('/admin/view-tables') : navigate('/login')
     },
     {
       icon: faUsers,
       title: "Staff Management",
       description: "Oversee waitstaff schedules, assignments, and performance all from one central dashboard.",
-      onClick: () => navigate('/admin/manage')
+      onClick: () => user.apiToken ?  navigate('/admin/manage'): navigate('/login')
     },
     {
       icon: faCalendar,
       title: "Reservation System",
       description: "Handle bookings, manage waiting lists, and coordinate special events seamlessly.",
-      onClick: () => navigate('/admin/view-reservations')
+      onClick: () => user.apiToken ? navigate('/admin/view-reservations') : navigate('/login')
     }
   ];
 
@@ -138,7 +143,7 @@ const Home = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-8">
           {features.map((feature, index) => (
-            <div onClick={feature.onClick} key={index} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <div onClick={feature.onClick} key={index} className="cursor-pointer bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="text-yellow-600 mb-4">
                 <FontAwesomeIcon icon={feature.icon} size="2x" />
               </div>
