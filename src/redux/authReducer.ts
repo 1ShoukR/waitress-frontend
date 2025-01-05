@@ -4,7 +4,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 // import { doLogin } from './thunks';
 
-const initialState = {
+interface AuthState {
+    apiToken: string | null;
+    authgroup: string | null;
+    userId: string | null;
+    userName: string | null;
+    userType: string | null;
+    status: 'idle' | 'loading' | 'succeeded' | 'failed';
+    error: string | null;
+}
+
+const initialState: AuthState = {
 	apiToken: null,
 	authgroup: null,
 	userId: null,
