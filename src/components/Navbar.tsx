@@ -148,16 +148,14 @@ const Navbar = () => {
             <img className="w-20 h-20" src={Icon} alt="Generic Waitress PNG" />
           </Link>
           <Link to="/">
-            <h1 className="text-3xl font-semibold">Waitress</h1>
+            <h1 className="text-3xl font-semibold">Waitress Admin Portal</h1>
           </Link>
         </div>
         <div className="flex gap-4">
-          <Link className="text-black-700 hover:text-gray-900 text-2xl font-medium" to="/create-account">
-            Create Account
+          <Link className="bg-yellow-600 text-white p-2 px-5 rounded-lg font-semibold hover:bg-yellow-700 transition-colors duration-300" to="/login">
+            Sign In 
           </Link>
-          <Link className="text-black-700 hover:text-gray-900 text-2xl font-medium" to="/login">
-            Login
-          </Link>
+          {/* we're gonna have conditional to show search icon when logged in. */}
           <FontAwesomeIcon 
             onClick={() => setShowSearch(true)} 
             className="mt-2 cursor-pointer hover:text-gray-700" 
