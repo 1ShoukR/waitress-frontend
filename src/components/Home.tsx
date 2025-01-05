@@ -165,7 +165,7 @@ const Home = () => {
             Use our web-based floor plan editor to create and modify your restaurant's layout. 
             Changes sync automatically with your mobile app for seamless management.
           </p>
-          <button className="bg-yellow-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-yellow-700 transition-colors duration-300">
+          <button onClick={() => navigate(user.apiToken ? '/admin/floorplans' : '/login')} className="bg-yellow-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-yellow-700 transition-colors duration-300">
             Open Floor Plan Editor
           </button>
         </div>
