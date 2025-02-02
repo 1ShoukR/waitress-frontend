@@ -2,12 +2,17 @@ import React, { FormEvent} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import axios from 'axios';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { setUser } from '../redux/authReducer';
+import { redirect, useNavigate } from 'react-router-dom';
 
 
 
 const Login = () => {
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
+  const [email, setEmail] = React.useState<string>('')
+  const [password, setPassword] = React.useState<string>('')
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
 const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
 	e.preventDefault();
 	console.log('working');
@@ -15,15 +20,19 @@ const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
 	const formData = new FormData();
 	formData.append('email', email);
 	formData.append('password', password);
-	formData.append('user_agent', 'web')
+	formData.append('userAgent', 'web')
 
 	try {
-		const response = await axios.post('http://127.0.0.1:3000/api/auth/login', formData, {
+		const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, formData, {
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},
 		});
-		console.log('Response:', response.data);
+		console.log('Response:', response);
+		if (response.status == 200 && response.data.token.length) {
+		dispatch(setUser(response.data))
+		navigate('/')
+		}
 	} catch (error) {
 		console.error('Error:', error);
 	}
