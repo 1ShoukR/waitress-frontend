@@ -1,9 +1,10 @@
 import {useState} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Icon from '../assets/icon.svg'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons/faMagnifyingGlass'
 import { faCalendar, faClock, faUser } from '@fortawesome/free-solid-svg-icons'
+import { useAppSelector } from '../redux/hooks'
 
 
 const handleSearch = ({
@@ -139,6 +140,8 @@ const SearchModal = ({ isOpen, onClose }: {isOpen: boolean, onClose: () => void}
 
 const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false)
+  const user = useAppSelector((state) => state.auth)
+  const navigate = useNavigate()
   
   return (
     <>
@@ -152,16 +155,23 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="flex gap-4">
-          <Link className="bg-yellow-600 text-white p-2 px-5 rounded-lg font-semibold hover:bg-yellow-700 transition-colors duration-300" to="/login">
-            Sign In 
-          </Link>
+          {user.userName ? (
+            <span className="p-2 px-5 font-semibold hover:underline hover:cursor-pointer" onClick={() => navigate('/Profile')}>{user.userName}</span>
+          ) : (
+            <Link 
+              className="bg-yellow-600 text-white p-2 px-5 rounded-lg font-semibold hover:bg-yellow-700 transition-colors duration-300" 
+              to="/login"
+            >
+              Sign In 
+            </Link>
+          )}
           {/* we're gonna have conditional to show search icon when logged in. */}
-          <FontAwesomeIcon 
+          {/* <FontAwesomeIcon 
             onClick={() => setShowSearch(true)} 
             className="mt-2 cursor-pointer hover:text-gray-700" 
             size="xl" 
             icon={faMagnifyingGlass} 
-          />
+          /> */}
         </div>
       </div>
       <SearchModal 
