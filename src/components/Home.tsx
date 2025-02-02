@@ -72,7 +72,7 @@ const Home = () => {
     */
     {
       icon: faUtensils,
-      title: "Floor Plan Editor",
+      title: "Floor Plans",
       description: "Design and modify your restaurant's layout with our intuitive web-based editor. Sync changes directly to your mobile app.",
       onClick: () => user.apiToken ? navigate('/admin/floorplans') : navigate('/login')
     },
