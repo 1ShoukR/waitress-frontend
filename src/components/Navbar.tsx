@@ -150,7 +150,7 @@ const Navbar = () => {
           <Link to="/">
             <img className="w-20 h-20" src={Icon} alt="Generic Waitress PNG" />
           </Link>
-          <Link to="/">
+          <Link to={user ? '/admin/dashboard' : '/'}>
             <h1 className="text-3xl font-semibold">Waitress Admin Portal</h1>
           </Link>
         </div>

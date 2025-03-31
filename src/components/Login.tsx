@@ -31,7 +31,7 @@ const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
 		console.log('Response:', response);
 		if (response.status == 200 && response.data.token.length) {
 		dispatch(setUser(response.data))
-		navigate('/')
+		navigate('/admin/dashboard')
 		}
 	} catch (error) {
 		console.error('Error:', error);
