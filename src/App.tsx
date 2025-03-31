@@ -8,6 +8,7 @@ import { Provider } from 'react-redux'
 import store from './redux/store'
 import ProfileHomepage from './components/admin/Profile'
 import FloorplanHomepage from './components/admin/FloorplanHomepage'
+import DashboardHomepage from './components/admin/Dashboard/DashboardHomepage'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/create-account" element={<CreateAccount />} />
           <Route path="/login" element={<Login />} />
           <Route path="/profile" element={<ProfileHomepage />} />
+          <Route path="/admin/dashboard" element={<DashboardHomepage />} />
           <Route path="/admin/floorplans" element={<FloorplanHomepage />} />
         </Routes>
       </div>
