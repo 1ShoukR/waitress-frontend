@@ -1,14 +1,16 @@
-import React, { MouseEventHandler, useState } from 'react';
+import React, { MouseEventHandler, useState, useEffect } from 'react';
 import { useAppSelector } from '../../../redux/hooks';
 import { Calendar, Users, MapPin, Clock, TrendingUp, Upload } from 'lucide-react';
-import { AdminDashboardData } from '../../../utils/types';
+import { AdminDashboardData, Restaurant, ApiResponse } from '../../../utils/types';
+import { useNavigate } from 'react-router-dom';
 
 const DashboardHomepage = () => {
   const userObject = useAppSelector((state) => state?.auth);
-  const [userData, setUserData] = useState<AdminDashboardData>();
+  const [userData, setUserData] = useState<Restaurant[]>([]); 
+  const navigate = useNavigate();
   
   // Fixed typing: Properly define fetchUserData as a MouseEventHandler
-  const fetchUserData: MouseEventHandler<HTMLButtonElement> = (event) => {
+  const fetchUserData: MouseEventHandler<HTMLButtonElement> = () => {
     // Inside this function, we can call our async function
     fetchDataFromServer();
   };
@@ -23,11 +25,38 @@ const DashboardHomepage = () => {
           'Authorization': `Bearer ${userObject?.apiToken}`
         },
       });
-      const data = await response.json();
-      setUserData(data);
-      console.log(data);
+      const data = await response.json() as ApiResponse;
+      
+      console.log("Original API response:", data);
+      
+      // Extract restaurant data from the success object
+      if (data?.success?.restaurant) {
+        let restaurantData: Restaurant[] = [];
+        
+        // Handle different possible formats of the restaurant data
+        if (Array.isArray(data.success.restaurant)) {
+          if (data.success.restaurant.length > 0) {
+            // If it's a nested array, flatten it or take the first array
+            if (Array.isArray(data.success.restaurant[0])) {
+              restaurantData = data.success.restaurant[0] as Restaurant[];
+            } else {
+              restaurantData = data.success.restaurant as Restaurant[];
+            }
+          }
+        } else {
+          // Handle case where it might be a single restaurant object
+          restaurantData = [data.success.restaurant as unknown as Restaurant];
+        }
+        
+        console.log("Processed restaurant data:", restaurantData);
+        setUserData(restaurantData);
+      } else {
+        console.log("No restaurant data found in response:", data);
+        setUserData([]);
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Error fetching data:", error);
+      setUserData([]);
     }
   };
 
@@ -50,7 +79,7 @@ const DashboardHomepage = () => {
           <button onClick={fetchUserData}>Fetch Data</button>
         </div>
         <div className="flex gap-4">
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+          <button onClick={()=> navigate('/admin/restaurant/add-new-restaurant')} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
             Add Restaurant
           </button>
           <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
@@ -104,27 +133,24 @@ const DashboardHomepage = () => {
         <div className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-xl font-bold mb-4">Your Restaurants</h2>
           <div className="space-y-4">
-            {userData.map(item) => {
-              
-              return(
-                <div key={item.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                  <div className="flex items-center gap-3">
-                    <MapPin className="h-5 w-5 text-gray-500" />
-                    <span>{item.name}</span>
+            {userData && userData.length > 0 ? (
+              userData.map((item, index) => {
+                console.log(`Item ${index}:`, item);
+                return(
+                  <div key={item.RestaurantId || index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div className="flex items-center gap-3">
+                      <MapPin className="h-5 w-5 text-gray-500" />
+                      <span>{item.Name || "Unnamed Restaurant"}</span>
+                    </div>
+                    <button className="text-blue-600 hover:text-blue-800">Manage</button>
                   </div>
-                  <button className="text-blue-600 hover:text-blue-800">Manage</button>
-                </div>
-              )
-            }}
-            {/* {['Downtown Bistro', 'Seaside Grill', 'Mountain View Restaurant'].map((restaurant) => (
-              <div key={restaurant} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <MapPin className="h-5 w-5 text-gray-500" />
-                  <span>{restaurant}</span>
-                </div>
-                <button className="text-blue-600 hover:text-blue-800">Manage</button>
+                )
+              })
+            ) : (
+              <div className="p-3 text-center text-gray-500">
+                No restaurants found. Click "Fetch Data" to load your restaurants.
               </div>
-            ))}
+            )}
           </div>
         </div>
 
