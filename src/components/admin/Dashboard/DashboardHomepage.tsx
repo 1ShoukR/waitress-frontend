@@ -104,7 +104,19 @@ const DashboardHomepage = () => {
         <div className="bg-white p-6 rounded-lg shadow">
           <h2 className="text-xl font-bold mb-4">Your Restaurants</h2>
           <div className="space-y-4">
-            {['Downtown Bistro', 'Seaside Grill', 'Mountain View Restaurant'].map((restaurant) => (
+            {userData.map(item) => {
+              
+              return(
+                <div key={item.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                  <div className="flex items-center gap-3">
+                    <MapPin className="h-5 w-5 text-gray-500" />
+                    <span>{item.name}</span>
+                  </div>
+                  <button className="text-blue-600 hover:text-blue-800">Manage</button>
+                </div>
+              )
+            }}
+            {/* {['Downtown Bistro', 'Seaside Grill', 'Mountain View Restaurant'].map((restaurant) => (
               <div key={restaurant} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <div className="flex items-center gap-3">
                   <MapPin className="h-5 w-5 text-gray-500" />
